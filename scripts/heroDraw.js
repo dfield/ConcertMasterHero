@@ -147,62 +147,69 @@ function Circle (paper, x, y, r){
 }
 
 function Path (paper){
-	this.paper = paper;
-	this.points = [];
-	this.pathString = "";
-	this.currPosition = new Point(0, 0);
+	var self = {};
 	
-	this.addPoint = function addPoint(x, y){
-		this.points.push(new Point(x,y));
+	self.paper = paper;
+	self.points = [];
+	self.pathString = "";
+	self.currPosition = new Point(0, 0);
+	
+	self.addPoint = function addPoint(x, y){
+		self.points.push(new Point(x,y));
 	};
-	this.makePath = function makePath(){
-		if(this.points.length != 0){
-			this.pathString = "M";
-			this.pathString = this.pathString + this.points[0].getX();
-			this.pathString = this.pathString + " " + this.points[0].getY();
-			for(var i=1; i < this.points.length; i++){
-				this.pathString = this.pathString + "L";
-				this.pathString = this.pathString + this.points[i].getX();
-				this.pathString = this.pathString + " " + this.points[i].getY();
+	self.makePath = function makePath(){
+		if(self.points.length != 0){
+			self.pathString = "M";
+			self.pathString = self.pathString + self.points[0].getX();
+			self.pathString = self.pathString + " " + self.points[0].getY();
+			for(var i=1; i < self.points.length; i++){
+				self.pathString = self.pathString + "L";
+				self.pathString = self.pathString + self.points[i].getX();
+				self.pathString = self.pathString + " " + self.points[i].getY();
 			}
-			this.path = this.paper.path(this.pathString);
+			self.path = self.paper.path(self.pathString);
 		}
 	};
-	this.addStroke = function addStroke(color){
-		this.path.attr({stroke: color});
+	self.addStroke = function addStroke(color){
+		self.path.attr({stroke: color});
 	};
-	this.addFill = function addFill(color){
-		this.path.attr({fill: color});
+	self.addFill = function addFill(color){
+		self.path.attr({fill: color});
 	};
-	this.getPath = function getPath(){
-		return this.path;
+	self.getPath = function getPath(){
+		return self.path;
 	};
-	this.setRotation = function(angle){
-		this.path.rotate(angle, true);
+	self.setRotation = function(angle){
+		self.path.rotate(angle, true);
 	};
-	this.setPosition = function(px, py){
-		this.path.translate(this.currPosition.getX() - px, this.currPosition.getY() - py);
-		this.currPosition = new Point(px, py);
+	self.setPosition = function(px, py){
+		self.path.translate(self.currPosition.getX() - px, self.currPosition.getY() - py);
+		self.currPosition = new Point(px, py);
 	};
+	return self;
 }
 
 function Point (x, y){
-	this.xPos = x;
-	this.yPos = y;
-	this.getX = function(){
-		return this.xPos;
+	var self = {};
+	
+	self.xPos = x;
+	self.yPos = y;
+	self.getX = function(){
+		return self.xPos;
 	};
-	this.getY = function(){
-		return this.yPos;
+	self.getY = function(){
+		return self.yPos;
 	};
-	this.addPoint = function(point){
-		this.xPos += point.xPos;
-		this.yPos += point.yPos;
+	self.addPoint = function(point){
+		self.xPos += point.xPos;
+		self.yPos += point.yPos;
 	};
-	this.scale = function(scalar){
-		this.xPos *= scalar;
-		this.yPos *= scalar;
+	self.scale = function(scalar){
+		self.xPos *= scalar;
+		self.yPos *= scalar;
 	};
+	
+	return self;
 }
 
 function drawCircle(paper, x, y, r, color, fill){
@@ -217,10 +224,4 @@ function drawCircle(paper, x, y, r, color, fill){
 function drawText(paper, x, y, text){
 	var t = paper.text(x,y,text);
 	return t;
-}
-
-function Note (startTime, duration, pitch){
-	this.startTime = start;
-	this.duration = duration;
-	this.pitch = pitch;
 }
