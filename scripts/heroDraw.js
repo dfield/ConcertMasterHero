@@ -91,7 +91,7 @@ function drawTriangles(paper){
 }
 
 function animateNote(stringNumber, letter, noteLength, animationTime){
-	note = new Circle(paper, 10 + 30*stringNumber, 10, 12);
+	var note = new Circle(paper, 10 + 30*stringNumber, 10, 12);
 	note.draw("yellow", true);
 	note.drawText(letter);
 	note.increaseFont();
