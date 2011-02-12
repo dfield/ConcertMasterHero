@@ -73,9 +73,6 @@ Song.prototype.parseData = function(songCode){
 		var attrCodes = noteCodes[a].split(",");
 		
 		this.notes.push(new Note(attrCodes[0], attrCodes[1], attrCodes[2]));
-		/*positions.push(attrCodes[0]);
-		durations.push(attrCodes[1]);
-		notePitch.push(attrCodes[2]);*/
 	}
 }
 

@@ -9,3 +9,7 @@ function getFlashMovie(movieName) {
 function playNote(msg){
 	flashMovie.playNote(msg);
 }
+
+function stopNote(){
+	flashMovie.stopNote("");
+}

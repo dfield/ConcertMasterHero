@@ -1,14 +1,13 @@
 
 //fingering: gfdsa
-var fingers = new Array(103, 102, 100, 115, 97);
+var fingers = new Array(72, 71, 70, 68, 83, 65);
 var pressed = new Array();
 var currentFinger = 0;
 
 document.onkeydown = function(e){
 	var finger = fingers.indexOf(e.keyCode) + 1;
-	
 	//if a correct finger is actually pressed, record it
-	if(finger > 0)
+	if(finger > 0 && pressed.indexOf(finger) == -1)
 		pressed.push(finger);
 }
 

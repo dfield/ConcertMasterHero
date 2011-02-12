@@ -14,6 +14,12 @@ var currentSong		= null;
 var currentDispIndex = 0;
 var currentPlayIndex = 0;
 
+var MOUSE_STABLE = 6;
+
+var prevMouseX = 0;
+var prevMouseY = 0;
+var mouseStability = 0;
+
 setInterval(step, TIME_STEP);
 function step(){
 	stepSongPlayer();
@@ -94,10 +100,28 @@ function stepPlayerUI(){
 	
 	moveBow(greatestAngle, mouseX, mouseY);
 	
-	var violinString = ViolinString.getStringByID(stringNum);
-	var pitch = violinString.getPitchByFinger(getMaxFinger());
+	//check for no movement
+	if(prevMouseX == mouseX && prevMouseY == mouseY){
+		if(mouseStability < MOUSE_STABLE){
+			//not stable yet
+			mouseStability++;
+		}
+		else{
+			//is stable
+			stopNote();
+		}
+	}
+	else{
+		mouseStability = 0;
+		
+		var violinString = ViolinString.getStringByID(stringNum);
+		var pitch = violinString.getPitchByFinger(getMaxFinger());
+		
+		playNote(pitch);
+	}
 	
-	playNote(pitch);
+	prevMouseX = mouseX;
+	prevMouseY = mouseY;
 }
 
 function displayNotes(song){
