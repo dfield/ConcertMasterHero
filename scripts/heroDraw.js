@@ -166,14 +166,14 @@ function Path (paper){
 	};
 	this.setRotation = function(angle){
 		this.path.rotate(angle, true);
-	}
+	};
 	this.getPoints = function(){
 		return this.points;
-	}
+	};
 	this.setPosition = function(px, py){
 		this.path.translate(this.currPosition.getX() - px, this.currPosition.getY() - py);
 		this.currPosition = new Point(px, py);
-	}
+	};
 }
 
 function Point (x, y){
@@ -188,11 +188,11 @@ function Point (x, y){
 	this.addPoint = function(point){
 		this.xPos += point.xPos;
 		this.yPos += point.yPos;
-	}
+	};
 	this.scale = function(scalar){
 		this.xPos *= scalar;
 		this.yPos *= scalar;
-	}
+	};
 }
 
 function drawCircle(paper, x, y, r, color, fill){
