@@ -1,0 +1,6 @@
+#sidebar {
+    float: right;
+    width: 200px;
+    background: #ccc;
+    margin: 10px;
+}

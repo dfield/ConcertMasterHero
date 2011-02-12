@@ -2,13 +2,46 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
-	
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<link rel="stylesheet" type="text/css" href="style.css" />
 	<title>Concert Master Hero</title>
-
 </head>
 <body onLoad="draw()">
-    
+		<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000"
+	            codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0"
+	            width="1" height="1" id="synthesizer" align="middle">
+	        <param name="allowScriptAccess" value="sameDomain" />
+	        <param name="allowFullScreen" value="false" />
+	        <param name="movie" value="synthesizer.swf" />
+	        <param name="quality" value="low" />
+	        <param name="wmode" value="transparent" />
+	        <param name="bgcolor" value="#ffffff" />
+
+	        <embed src="swfs/synthesizer.swf" quality="low" wmode="transparent" bgcolor="#ffffff"
+	            width="1" height="1" name="synthesizer" align="middle"
+	            allowScriptAccess="sameDomain" allowFullScreen="false"
+	            type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />
+
+	    </object>
+	<div id="sidebar">
+		<b><u>ConcertMasterHero</u></b><br>
+		<ul>
+			<li>Charles Yeh</li>
+			<li>Dylan Field</li>
+			<li>Devin Finzer</li>
+		</ul>
+		<b><u>Songs</u></b><br>
+		<ul>
+			<li>
+				<a href='javascript:demoSong("Twinkle Twinkle Little Star")' value='Play Twinkle Twinkle'>Demo Song</a><br>
+			</li>
+			<li>
+				<a href='javascript:playSong("Twinkle Twinkle Little Star")' value='Play Along With Twinkle Twinkle'>Play Song</a><br>
+			</li>
+			<li>
+				<a href="javascript:demoSong('Twinkle Twinkle Little Star');" onClick="">Play 3G</a>
+			</li>
+	</div>  
     <!--
     
     Call with javascript: playNote("3G");
@@ -16,28 +49,8 @@
     
     -->
     
-    <object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000"
-            codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0"
-            width="1" height="1" id="synthesizer" align="middle">
-        <param name="allowScriptAccess" value="sameDomain" />
-        <param name="allowFullScreen" value="false" />
-        <param name="movie" value="synthesizer.swf" />
-        <param name="quality" value="low" />
-        <param name="wmode" value="transparent" />
-        <param name="bgcolor" value="#ffffff" />
-        
-        <embed src="swfs/synthesizer.swf" quality="low" wmode="transparent" bgcolor="#ffffff"
-            width="1" height="1" name="synthesizer" align="middle"
-            allowScriptAccess="sameDomain" allowFullScreen="false"
-            type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />
-        
-    </object>
-    <a href='javascript:demoSong("Twinkle Twinkle Little Star")' value='Play Twinkle Twinkle'>Demo Song</a>
-    <a href='javascript:playSong("Twinkle Twinkle Little Star")' value='Play Along With Twinkle Twinkle'>Play Song</a>
-
-    <canvas id="canvas"></canvas>
-	
-    <a href="javascript:demoSong('Twinkle Twinkle Little Star');" onClick="">Play 3G</a>
+    
+   
     <script type="text/javascript" src="scripts/heroDraw.js"></script>
     <script type="text/javascript" src="scripts/main.js"></script>
     <script type="text/javascript" src="scripts/io.js"></script>
