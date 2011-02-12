@@ -74,8 +74,54 @@ function stepSongPlayer(){
 function stepPlayerUI(){
 	//move bow
 	
+	var mouseX = 0;
+	var mouseY = 0;
+	var IE = document.all ? true : false;
 	
+	if (IE) { // grab the x-y pos.s if browser is IE
+		mouseX = event.clientX + document.body.scrollLeft;
+		mouseY = event.clientY + document.body.scrollTop;
+	} else {  // grab the x-y pos.s if browser is NS
+		mouseX = e.pageX;
+		mouseY = e.pageY;
+	}
 	
+	//match bow to strings
+	var angles = new Array(4);
+	for(var a = 0; a < 4; a++){
+		var string = this["s" + a];
+		angles[a] = Math.atan2(mouseY - string.y, mouseX - string.x);
+		
+	}
+	greatest = Math.max(angles[0], angles[1], angles[2], angles[3]);
+	
+	var stringNum = -1;
+	switch(greatest){
+		case angles[0]:
+			stringNum = 0;
+			break;
+			
+		case angles[1]:
+			stringNum = 1;
+			break;
+			
+		case angles[2]:
+			stringNum = 2;
+			break;
+			
+		case angles[3]:
+			stringNum = 3;
+			break;
+			
+		default:
+			//error, bow isn't on a string?
+			break;
+	}
+	
+	var violinString = ViolinString.getStringByID(stringNum);
+	var pitch = violinString.getPitchByFinger(getMaxFinger());
+	
+	playNote(pitch);
 }
 
 function displayNotes(song){
@@ -84,10 +130,7 @@ function displayNotes(song){
 	
 	if(note.getPosition() <= currentTime - DISPLAY_TIME){
 		//display note and prepare to display next
-		//playNote(note.pitch + ":" + note.getDuration());
-		
-		//######show note here
-		
+		animateNote(ViolinString.getStringByPitch(note.pitch), note.pitch, note.getDuration(), DISPLAY_TIME);
 		currentPlayIndex++;
 	}
 }
