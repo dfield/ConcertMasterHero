@@ -1,5 +1,5 @@
 function draw(){
-	var paper = Raphael(0, 0, 800, 600);
+	paper = Raphael(0, 0, 800, 600);
 	drawTriangles(paper);
 	drawStrings(paper);
 }
@@ -9,7 +9,6 @@ var bow;
 
 function moveBow(rotation, posX, posY){
 	bow.setRotation(rotation);
-	
 	bow.setPosition(-posX, -posY);
 }
 
@@ -92,7 +91,25 @@ function drawTriangles(paper){
 }
 
 function animateNote(stringNumber, letter, noteLength, animationTime){
-	// TODO: fill this in
+	note = new Circle(paper, 10 + 30*stringNumber, 10, 12);
+	note.draw("yellow", true);
+	note.drawText(letter);
+	note.increaseFont();
+	switch(stringNumber){
+		case 1:
+			note.animate(40, 350, animationTime);
+			break;
+		case 2:
+			note.animate(95, 320, animationTime);
+			break;
+		case 3:
+			note.animate(160, 320, animationTime);
+			break;
+		case 4:
+			note.animate(220, 350, animationTime);
+			break;
+	}
+	setTimeout('note.destroy()', noteLength);
 }
 
 function Circle (paper, x, y, r){
@@ -105,6 +122,9 @@ function Circle (paper, x, y, r){
 	};
 	this.drawText = function draw(text){
 		this.drawnText = drawText(this.paper, this.xPos, this.yPos, text);
+	};
+	this.increaseFont = function font(){
+		this.drawnText.attr({"font-size": "20"});
 	};
 	this.animate = function animateCircle(xPos, yPos, delay){
 		this.circle.animate({cx: xPos, cy: yPos}, delay);
