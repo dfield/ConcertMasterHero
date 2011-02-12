@@ -44,6 +44,8 @@ function stepSongPlayer(){
 			}
 			
 			playNotes(currentSong);
+			if(currentTime >= currentSong.getEndTime())
+				currentState = STATE_WAIT;
 			
 			break;
 			
@@ -55,6 +57,8 @@ function stepSongPlayer(){
 			}
 			
 			displayNotes(currentSong);
+			if(currentTime >= currentSong.getEndTime())
+				currentState = STATE_WAIT;
 			
 			break;
 	}
@@ -62,7 +66,11 @@ function stepSongPlayer(){
 }
 
 function stepPlayerUI(){
-	//move bow
+	//no action if mouse is outside of play area
+	if(mouseX > 900){
+		stopNote();
+		return;
+	}
 	
 	//match bow to strings
 	var angles = new Array(4);
@@ -126,18 +134,26 @@ function stepPlayerUI(){
 
 function displayNotes(song){
 	
-	var note = song.getNote(currentPlayIndex);
+	var note = song.getNote(currentDispIndex);
+	
+	if(currentDispIndex >= song.notes.length){
+		return;
+	}
 	
 	if(note.getPosition() <= currentTime - DISPLAY_TIME){
 		//display note and prepare to display next
-		animateNote(ViolinString.getStringByPitch(note.pitch), note.pitch, note.getDuration(), DISPLAY_TIME);
-		currentPlayIndex++;
+		animateNote(ViolinString.getStringByPitch(note.pitch) + 1, ViolinString.getFingerByPitch(note.pitch), note.getDuration(), DISPLAY_TIME);
+		currentDispIndex++;
 	}
 }
 
 function playNotes(song){
 	
 	var note = song.getNote(currentPlayIndex);
+	
+	if(currentPlayIndex >= song.notes.length){
+		return;
+	}
 	
 	if(note.getPosition() <= currentTime){
 		//play note and prepare to play next
@@ -154,6 +170,8 @@ function demoSong(songName){
 function playSong(songName){
 	currentState = STATE_PLAY;
 	startSong(songName);
+	
+	currentTime = DISPLAY_TIME;
 }
 
 function startSong(songName){
@@ -161,6 +179,8 @@ function startSong(songName){
 	if(songData == "")
 		return;
 	
+	currentDispIndex = 0;
+	currentPlayIndex = 0;
 	currentTime = 0;
 	currentSong = new Song(songData);
 	

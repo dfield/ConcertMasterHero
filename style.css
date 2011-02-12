@@ -1,6 +1,8 @@
 #sidebar {
+	font-family: Arial, Helvetica, sans-serif;
+	
     float: right;
-    width: 200px;
+    width: 300px;
     background: #ccc;
     margin: 10px;
 }

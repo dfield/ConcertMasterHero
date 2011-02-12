@@ -1,5 +1,7 @@
 //---------------String Class---------------
 
+var FINGERS = " HGFDSA";
+
 var strings = new Array(4);
 strings[0] = new ViolinString(40, 350, new Array("2G", "2GA", "3A", "3AB", "3B", "3C", "3CD"));
 strings[1] = new ViolinString(95, 320, new Array("3D", "3DE", "3E", "3F", "3FG", "3G", "3GA"));
@@ -20,6 +22,10 @@ ViolinString.prototype.getPitchByFinger = function(finger){
 	return this.notes[finger];
 }
 
+ViolinString.prototype.getFingerByPitch = function(pitch){
+	return this.notes.indexOf(pitch);
+}
+
 ViolinString.getStringByID = function(id){
 	return strings[id];
 }
@@ -31,6 +37,16 @@ ViolinString.getStringByPitch = function(pitch){
 	}
 	
 	return -1;
+}
+
+ViolinString.getFingerByPitch = function(pitch){
+	for(var a = 0; a < 4; a++){
+		var finger = strings[a].getFingerByPitch(pitch);
+		if(finger != -1)
+			return FINGERS.charAt(finger);
+	}
+	
+	return "";
 }
 
 //-------------End String Class-------------
@@ -82,6 +98,12 @@ Song.prototype.getNote = function(index){
 	
 	return this.notes[index];
 }
+
+Song.prototype.getEndTime = function(){
+	var note = this.notes[this.notes.length - 1];
+	return note.getPosition() + note.getDuration();
+}
+
 //--------------End Song Class--------------
 
 function getSongCode(songName){

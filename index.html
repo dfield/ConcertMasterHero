@@ -30,9 +30,21 @@
 			<li>Dylan Field</li>
 			<li>Devin Finzer</li>
 		</ul>
-		<b><u>Songs</u></b><br>
-		<ul>
-			<li>
+		<p><b><u>Songs</u></b><br>
+        	<script>
+				var songNames = new Array("Tutorial", "Twinkle Twinkle Little Star", "Humoresque", "Allstar");
+				document.write("<ul>");
+				
+				for(var a = 0; a < songNames.length; a++){
+					document.write("<li>");
+					document.write("<a href='javascript:demoSong(\"" + songNames[a] + "\")'>Listen to " + songNames[a] + "</a><br>");
+					document.write("<a href='javascript:playSong(\"" + songNames[a] + "\")'>Play " + songNames[a] + "</a><br>");
+					document.write("</li>");
+				}
+				
+				document.write("<\ul>");
+			</script>
+			<!--li>
 				<a href='javascript:demoSong("Twinkle Twinkle Little Star")' value='Play Twinkle Twinkle'>Demo Song</a><br>
 			</li>
 			<li>
@@ -40,12 +52,13 @@
 			</li>
 			<li>
 				<a href="javascript:demoSong('Twinkle Twinkle Little Star');" onClick="">Play 3G</a>
-			</li>
-		</ul>
-		<br>
-		<b><u>Instructions</u></b><br>
-		(instructions here)
-	</div>  
+			</li-->
+          <br>
+		    <b><u>Instructions</u></b><br>
+		Move the mouse as you would a violin bow. Moving the bow within a colored triangle plays one string.</p>
+		<p>The keys GDS simulate basic fingering on the violin and can be used to play notes.</p>
+		<p>Play with no fingers for empty yellow circles. Else, press the key that is inside the circle.</p>
+	</div>
     <!--
     
     Call with javascript: playNote("3G");
