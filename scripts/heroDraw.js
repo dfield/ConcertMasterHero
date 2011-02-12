@@ -10,16 +10,6 @@ var bow;
 function moveBow(rotation, posX, posY){
 	bow.setRotation(rotation);
 	
-	var points = bow.getPoints();
-	/*var averagePoint = new Point(0, 0);
-	
-	for(var a = 0; a < points.length; a++){
-		averagePoint.addPoint(points[a]);
-	}
-	
-	averagePoint.scale(1 / points.length);
-	averagePoint.addPoint()*/
-	
 	bow.setPosition(-posX, -posY);
 }
 
@@ -166,9 +156,6 @@ function Path (paper){
 	};
 	this.setRotation = function(angle){
 		this.path.rotate(angle, true);
-	};
-	this.getPoints = function(){
-		return this.points;
 	};
 	this.setPosition = function(px, py){
 		this.path.translate(this.currPosition.getX() - px, this.currPosition.getY() - py);
