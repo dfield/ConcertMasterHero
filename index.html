@@ -1,15 +1,48 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
+
 <head>
-	<script type="text/javascript" src="scripts/raphael-min.js"></script>
-	<script type="text/javascript" src="scripts/main.js"></script>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<title>Untitled Document</title>
+	
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>Concert Master Hero</title>
+
 </head>
-
 <body onLoad="draw()">
+    
+    <!--
+    
+    Call with javascript: playNote("3G");
+    <a href="javascript:playNote('3G');" onClick="">Play 3G</a>
+    
+    -->
+    
+    <object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000"
+            codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0"
+            width="1" height="1" id="synthesizer" align="middle">
+        <param name="allowScriptAccess" value="sameDomain" />
+        <param name="allowFullScreen" value="false" />
+        <param name="movie" value="synthesizer.swf" />
+        <param name="quality" value="low" />
+        <param name="wmode" value="transparent" />
+        <param name="bgcolor" value="#ffffff" />
+        
+        <embed src="swfs/synthesizer.swf" quality="low" wmode="transparent" bgcolor="#ffffff"
+            width="1" height="1" name="synthesizer" align="middle"
+            allowScriptAccess="sameDomain" allowFullScreen="false"
+            type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />
+        
+    </object>
+    <a href='javascript:demoSong("Twinkle Twinkle Little Star")' value='Play Twinkle Twinkle'>Demo Song</a>
+    <a href='javascript:playSong("Twinkle Twinkle Little Star")' value='Play Along With Twinkle Twinkle'>Play Song</a>
 
-
-
+    <canvas id="canvas"></canvas>
+	
+    <a href="javascript:demoSong('Twinkle Twinkle Little Star');" onClick="">Play 3G</a>
+    <script type="text/javascript" src="scripts/main.js"></script>
+    <script type="text/javascript" src="scripts/music.js"></script>
+    <script type="text/javascript" src="scripts/flashCommunicator.js"></script>
+	<script type="text/javascript" src="scripts/raphael-min.js"></script>
+	<script type="text/javascript" src="scripts/wz_jsgraphics.js"></script>
+	
 </body>
 </html>
