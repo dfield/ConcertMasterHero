@@ -109,38 +109,41 @@ function animateNote(stringNumber, letter, noteLength, animationTime){
 			note.animate(220, 350, animationTime);
 			break;
 	}
-	setTimeout('note.destroy()', noteLength);
+	setTimeout(note.destroy, noteLength);
 }
 
 function Circle (paper, x, y, r){
-	this.paper = paper;
-	this.xPos = x;
-	this.yPos = y;
-	this.radius = r;
-	this.draw = function draw(color, fill){
-		this.circle = drawCircle(this.paper, this.xPos, this.yPos, this.radius, color, fill);
+	var self = {};
+	self.paper = paper;
+	self.xPos = x;
+	self.yPos = y;
+	self.radius = r;
+	self.draw = function draw(color, fill){
+		self.circle = drawCircle(self.paper, self.xPos, self.yPos, self.radius, color, fill);
 	};
-	this.drawText = function draw(text){
-		this.drawnText = drawText(this.paper, this.xPos, this.yPos, text);
+	self.drawText = function draw(text){
+		self.drawnText = drawText(self.paper, self.xPos, self.yPos, text);
 	};
-	this.increaseFont = function font(){
-		this.drawnText.attr({"font-size": "20"});
+	self.increaseFont = function font(){
+		self.drawnText.attr({"font-size": "20"});
 	};
-	this.animate = function animateCircle(xPos, yPos, delay){
-		this.circle.animate({cx: xPos, cy: yPos}, delay);
-		this.drawnText.animateWith(this.circle, {x: xPos, y: yPos}, delay);
+	self.animate = function animateCircle(xPos, yPos, delay){
+		self.circle.animate({cx: xPos, cy: yPos}, delay);
+		self.drawnText.animateWith(self.circle, {x: xPos, y: yPos}, delay);
 	};
-	this.animateAlong = function animateCircleAlong(path, time){
-		this.circle.animateAlong(path, time);
+	self.animateAlong = function animateCircleAlong(path, time){
+		self.circle.animateAlong(path, time);
 	};
-	this.destroy = function destroy(time){
-		if(this.circle != null){
-			this.circle.remove();
+	self.destroy = function destroy(){
+		if(self.circle != null){
+			self.circle.remove();
 		}
-		if(this.drawnText != null){
-			this.drawnText.remove();
+		if(self.drawnText != null){
+			self.drawnText.remove();
 		}
 	};
+	
+	return self;
 }
 
 function Path (paper){
