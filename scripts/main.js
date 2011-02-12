@@ -62,12 +62,10 @@ function stepSongPlayer(){
 			}
 			
 			displayNotes(currentSong);
+			playNotes(currentSong);
 			if(currentTime >= currentSong.getEndTime() + 2 * DISPLAY_TIME){
 				//end song and show score
 				currentState = STATE_WAIT;
-				
-				var board = document.getElementById("song_score");
-				board.innerHTML = Math.ceil(songScore / songMax * 100);
 			}
 			
 			break;
@@ -76,8 +74,12 @@ function stepSongPlayer(){
 }
 
 function stepPlayerUI(){
-	if(currentState == STATE_PLAY)
+	if(currentState == STATE_PLAY && currentTime > 2 * DISPLAY_TIME){
 		songMax++;
+		
+		var board = document.getElementById("song_score");
+		board.innerHTML = Math.ceil(songScore / songMax * 100);
+	}
 	
 	//no action if mouse is outside of play area
 	if(mouseX > 900){
@@ -162,7 +164,7 @@ function displayNotes(song){
 		return;
 	}
 	
-	if(note.getPosition() <= currentTime - DISPLAY_TIME){
+	if(note.getPosition() - DISPLAY_TIME <= currentTime){
 		//display note and prepare to display next
 		animateNote(ViolinString.getStringByPitch(note.pitch) + 1, ViolinString.getFingerByPitch(note.pitch), note.getDuration() + DISPLAY_TIME, DISPLAY_TIME);
 		currentDispIndex++;
@@ -179,7 +181,9 @@ function playNotes(song){
 	
 	if(note.getPosition() <= currentTime){
 		//play note and prepare to play next
-		playNote(note.pitch + ":" + note.getDuration());
+		if(currentState != STATE_PLAY)
+			playNote(note.pitch + ":" + note.getDuration());
+		
 		currentPlayIndex++;
 	}
 }
@@ -193,7 +197,7 @@ function playSong(songName){
 	currentState = STATE_PLAY;
 	startSong(songName);
 	
-	currentTime = DISPLAY_TIME;
+	currentTime = -DISPLAY_TIME;
 	
 	noteScore = 0;
 	noteMax = 0;
