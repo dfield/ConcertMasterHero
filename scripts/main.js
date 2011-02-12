@@ -1,9 +1,12 @@
+function draw(){
+	var paper = Raphael(0, 0, 500, 500);
+	var circle = paper.circle(125, 125, 75);
+	circle.attr("fill", "#f00");
+	circle.attr("stroke", "#fff");
+}
 
-window.onload = function(){
-	
-	var canvas = document.getElementById("canvas");
-	var c = canvas.getContext("2d");
-	c.fillStyle='red';
-	c.fillRect(0,0,100,100);
-	
+function Note (startTime, duration, pitch){
+	this.startTime = start;
+	this.duration = duration;
+	this.pitch = pitch;
 }
