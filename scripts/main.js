@@ -6,24 +6,34 @@ var DISPLAY_TIME = 4000;
 STATE_WAIT = "WAIT";
 STATE_PLAY = "PLAY";
 STATE_DEMO = "DEMO";
+STATE_RECORD = "RECORD";
 
+//for recording songs
+var currentRecord = "";
+var currentRecordNote = null;
+var num_records = 0;
+
+//for playing
 var currentState	= STATE_WAIT;
 var currentTime		= 0;
 var currentSong		= null;
-
-var noteScore = 0;
-var noteMax = 0;
-var songScore = 0;
-var songMax = 0;
-
 var currentDispIndex = 0;
 var currentPlayIndex = 0;
 
-var MOUSE_STABLE = 6;
+//for multiple listening
+var currentSongs	= new Array();
+var playIndices		= new Array();
+var currentTimes	= new Array();
 
+//for score counting
+var songScore 	= 0;
+var songMax 	= 0;
+
+//if the player is still for 6 "frames," then the sounds stop
+var MOUSE_STABLE = 6;
+var mouseStability = 0;
 var prevMouseX = 0;
 var prevMouseY = 0;
-var mouseStability = 0;
 
 setInterval(step, TIME_STEP);
 function step(){
@@ -31,6 +41,10 @@ function step(){
 	stepPlayerUI();
 	
 	currentTime += TIME_STEP;
+	
+	for(var a = 0; a < currentTimes.length; a++){
+		currentTimes[a] += TIME_STEP;
+	}
 }
 
 function stepSongPlayer(){
@@ -38,35 +52,52 @@ function stepSongPlayer(){
 	switch(currentState){
 		case STATE_WAIT:
 			//do nothing
-			
 			break;
 			
 		case STATE_DEMO:
-			//play demo song
-			if(!currentSong){
+			//use multilistener
+			if(currentSongs.length == 0){
 				currentState = STATE_WAIT;
 				break;
 			}
 			
-			playNotes(currentSong);
-			if(currentTime >= currentSong.getEndTime())
-				currentState = STATE_WAIT;
+			for(var a = 0; a < currentSongs.length; a++){
+				playNotes(currentSongs[a], a);
+				
+				//check if this song is over
+				if(currentTime >= currentSongs[a].getEndTime()){
+					currentSongs.splice(a, 1);
+					currentTimes.splice(a, 1);
+					playIndices.splice(a, 1);
+					a--;
+				}
+			}
 			
 			break;
 			
 		case STATE_PLAY:
-			//playing along
+			//use single-track player for play alongs
 			if(!currentSong){
 				currentState = STATE_WAIT;
 				break;
 			}
 			
 			displayNotes(currentSong);
-			playNotes(currentSong);
-			if(currentTime >= currentSong.getEndTime() + 2 * DISPLAY_TIME){
-				//end song and show score
+			
+			//-1 signifies that the single-track player is being used
+			playNotes(currentSong, -1);
+			if(currentTime >= currentSong.getEndTime()){
+				//end song and show score if song is over
 				currentState = STATE_WAIT;
+				
+				var board = document.getElementById("song_score");
+				board.innerHTML = Math.ceil(songScore / songMax * 100);
 			}
+			
+			break;
+			
+		case STATE_RECORD:
+			//recording functionalities are within specialized event handlers
 			
 			break;
 	}
@@ -74,15 +105,13 @@ function stepSongPlayer(){
 }
 
 function stepPlayerUI(){
-	if(currentState == STATE_PLAY && currentTime > 2 * DISPLAY_TIME){
+	//for score counting
+	if(currentState == STATE_PLAY && currentTime > 0){
 		songMax++;
-		
-		var board = document.getElementById("song_score");
-		board.innerHTML = Math.ceil(songScore / songMax * 100);
 	}
 	
 	//no action if mouse is outside of play area
-	if(mouseX > 900){
+	if(mouseX > 800){
 		stopNote();
 		return;
 	}
@@ -96,31 +125,20 @@ function stepPlayerUI(){
 	
 	var greatestAngle = Math.max(angles[0], angles[1], angles[2], angles[3]);
 	
+	//get the string the bow is resting on
 	var stringNum = -1;
-	switch(greatestAngle){
-		case angles[0]:
-			stringNum = 0;
+	for(var a = 0; a < 4; a++){
+		if(greatestAngle == angles[a]){
+			stringNum = a;
 			break;
-			
-		case angles[1]:
-			stringNum = 1;
-			break;
-			
-		case angles[2]:
-			stringNum = 2;
-			break;
-			
-		case angles[3]:
-			stringNum = 3;
-			break;
-			
-		default:
-			//error, bow isn't on a string?
-			break;
+		}
 	}
 	
-	//draw bow with rotation greatestAngle and pos
+	//if stringNum = -1, then there is an error
+	if(stringNum == -1)
+		return;
 	
+	//draw bow with rotation greatestAngle and pos
 	moveBow(greatestAngle, mouseX, mouseY);
 	
 	//check for no movement
@@ -130,28 +148,56 @@ function stepPlayerUI(){
 			mouseStability++;
 		}
 		else{
-			//is stable
+			//if recording, write down note since duration is known
+			if(currentState == STATE_RECORD){
+				writeRecordNote();
+			}
+			
+			//player stopped moving, so stop sound
 			stopNote();
 		}
 	}
 	else{
+		//player is moving the bow
 		mouseStability = 0;
 		
+		//find pitch being played
 		var violinString = ViolinString.getStringByID(stringNum);
 		var pitch = violinString.getPitchByFinger(getMaxFinger());
 		
 		playNote(pitch);
 		
 		if(currentState == STATE_PLAY){
-			//check for score
-			var note = currentSong.getNote(currentPlayIndex);
-			var correct = note.pitch;
 			
-			if(pitch == correct)
+			//if playing along, check for score correctness
+			var note = currentSong.getNote(currentPlayIndex);
+			
+			//if the right note is being played, then add to score
+			if(note && pitch == note.pitch){
 				songScore++;
+			}
+			
+		}
+		else if(currentState == STATE_RECORD){
+			//currently recording
+			
+			if(!currentRecordNote){
+				//if record note doesn't exist, create one
+				createRecordNote(pitch);
+			}
+			else if(pitch == currentRecordNote.pitch){
+				//if note is already being played, ignore; augment its duration onto the previous one
+			}
+			else{
+				//if note changed, record previous and begin a new recording note
+				writeRecordNote();
+				createRecordNote(pitch);
+			}
+			
 		}
 	}
 	
+	//for testing whether the player stops moving
 	prevMouseX = mouseX;
 	prevMouseY = mouseY;
 }
@@ -171,20 +217,33 @@ function displayNotes(song){
 	}
 }
 
-function playNotes(song){
+function playNotes(song, index){
+	//single-track player info here
+	var pIndex = currentPlayIndex;
+	var time = currentTime;
 	
-	var note = song.getNote(currentPlayIndex);
+	//if the multi-sound player is begin used, pull info from arrays
+	if(index != -1){
+		playIndex = playIndices[index];
+		time = currentTimes[index];
+	}
 	
-	if(currentPlayIndex >= song.notes.length){
+	var note = song.getNote(playIndex);
+	
+	if(playIndex >= song.notes.length){
 		return;
 	}
 	
-	if(note.getPosition() <= currentTime){
+	if(note.getPosition() <= time){
 		//play note and prepare to play next
 		if(currentState != STATE_PLAY)
 			playNote(note.pitch + ":" + note.getDuration());
 		
-		currentPlayIndex++;
+		//add to correct sound player index
+		if(index == -1)
+			currentPlayIndex++;
+		else
+			playIndices[index]++;
 	}
 }
 
@@ -207,6 +266,10 @@ function playSong(songName){
 
 function startSong(songName){
 	var songData = getSongCode(songName);
+	startSongCode(songData);
+}
+
+function startSongCode(songData){
 	if(songData == "")
 		return;
 	
@@ -215,6 +278,60 @@ function startSong(songName){
 	currentTime = 0;
 	currentSong = new Song(songData);
 	
+	currentSongs.push(currentSong);
+	currentTimes.push(0);
+	playIndices.push(0);
+}
+
+function recordSong(){
+	var recordToggle = document.getElementById("record_toggle");
+	var records = document.getElementById("records");
+	
+	if(currentState == STATE_RECORD){
+		//currently recording; stop recording
+		recordToggle.innerHTML = "Click here to start recording.";
+		
+		if(currentRecordNote)
+			writeRecordNote();
+		
+		records.innerHTML += "<a href='javascript: playRecording(\"" + currentRecord + "\")'>Record #" + num_records + "</a><br />";
+		currentState = STATE_WAIT;
+		
+	}
+	else{
+		recordToggle.innerHTML = "Click here to stop recording.";
+		
+		//start recording
+		num_records++;
+		
+		currentRecord = "";
+		currentRecordNote = null;
+		currentTime = 0;
+		currentState = STATE_RECORD;
+	}
+	
+}
+
+function writeRecordNote(){
+	if(!currentRecordNote)
+		return;
+	
+	var duration = (currentTime - currentRecordNote.getPosition()) / currentRecordNote.TEMPO_SCALE;
+	var position = currentRecordNote.getPosition() / currentRecordNote.TEMPO_SCALE;
+	var pitch = currentRecordNote.pitch;
+	
+	currentRecord += position + "," + duration + "," + pitch + ";";
+	
+	currentRecordNote = null;
+}
+
+function createRecordNote(pitch){
+	currentRecordNote = new Note(currentTime / (new Note()).TEMPO_SCALE, 0, pitch);
+}
+
+function playRecording(code){
+	currentState = STATE_DEMO;
+	startSongCode(code);
 }
 
 /*

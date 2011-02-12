@@ -20,7 +20,9 @@ document.onkeyup = function(e){
 }
 
 function getMaxFinger(){
+	//returns the left-most key that is being pressed to simulate a violin
 	var maxFinger = 0;
+	
 	for(var a = 0; a < pressed.length; a++){
 		maxFinger = Math.max(pressed[a], maxFinger);
 	}

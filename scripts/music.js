@@ -58,7 +58,7 @@ function Note (position, duration, pitch){
 	this.pitch		= pitch;
 }
 
-//the larger the number, the longer the note
+//the larger the number, the longer each note
 //if TEMPO_SCALE = 1000, a note with duration 1 will last for 1000 ms
 Note.prototype.TEMPO_SCALE = 500;
 
@@ -81,6 +81,7 @@ function Song(songCode){
 Song.prototype.parseData = function(songCode){
 	var noteCodes = songCode.split(";");
 	
+	//turn song codes into note classes
 	for(var a = 0; a < noteCodes.length; a++){
 		if(noteCodes[a] == ""){
 			continue;
@@ -113,7 +114,7 @@ function getSongCode(songName){
 			break;
 			
 		case "Twinkle Twinkle Little Star":
-			return "0,2,3D;2,2,3D;4,2,4A;6,2,4A;8,2,4B;10,2,4B;12,4,4A;16,2,3G;18,2,3G;20,2,3FG;22,2,3FG;24,2,3E;26,2,3E;28,4,3D;32,2,4A;34,2,4A;36,2,3G;38,2,3G;40,2,3FG;42,2,3FG;44,4,3E;48,2,4A;50,2,4A;52,2,3G;54,2,3G;56,2,3FG;58,2,3FG;60,4,3E;64,2,3D;66,2,3D;68,2,4A;70,2,4A;72,2,4B;74,2,4B;76,4,4A;80,2,3G;82,2,3G;84,2,3FG;86,2,3FG;88,2,3E;90,2,3E;92,4,3D";
+			return "0,2,3D;2,2,3D;4,2,4A;6,2,4A;8,2,4B;10,2,4B;12,4,4A;16,2,3G;18,2,3G;20,2,3FG;22,2,3FG;24,2,3E;26,2,3E;28,4,3D;32,2,4A;34,2,4A;36,2,3G;38,2,3G;40,2,3FG;42,2,3FG;44,4,3E";/*;48,2,4A;50,2,4A;52,2,3G;54,2,3G;56,2,3FG;58,2,3FG;60,4,3E;64,2,3D;66,2,3D;68,2,4A;70,2,4A;72,2,4B;74,2,4B;76,4,4A;80,2,3G;82,2,3G;84,2,3FG;86,2,3FG;88,2,3E;90,2,3E;92,4,3D*/
 			break;
 			
 		case "Humoresque":
@@ -122,6 +123,10 @@ function getSongCode(songName){
 			
 		case "Allstar":
 			return "0,2,3D;2,1,4A;3,1,3FG;4,1,3FG;5,1,3E;6,1,3D;7,2,3G;9,1,3G;10,1,3FG;11,1,3E;12,1,3E;13,2,3D;15,1,3D;16,1,4A;17,1,3FG;18,1,3FG;19,1,3E;20,1,3E;21,1,3D;22,1,3E;23,2,3FG;25,2,3B";
+			break;
+			
+		case "Canon in D":
+			return "0,2,4FG;2,2,4E;4,2,4D;6,2,4CD;8,2,4B;10,2,4A;12,2,4B;14,2,4CD;16,1,3D;17,1,4A;18,2,3A;20,1,3B;21,1,3FG;22,2,3FG;24,1,3G;25,1,3D;26,2,3D;28,1,3G;29,1,3D;30,1,3E;31,1,3A;32,2,4D;34,2,4CD;36,2,4B;38,2,4A;40,2,3G;42,2,3FG;44,2,3G;46,2,4A";
 			break;
 			
 		default:

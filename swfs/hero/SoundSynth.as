@@ -18,7 +18,10 @@
 			notes = arr;
 		}
 		public static function getSound(note:String){
-			return sounds[notes.indexOf(note)];
+			//return sounds[notes.indexOf(note)];
+			var SndClass = getDefinitionByName("Note" + note + ".wav");
+			var snd = new SndClass();
+			return snd;
 		}
 	}
 }
