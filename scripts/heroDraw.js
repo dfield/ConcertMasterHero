@@ -4,7 +4,32 @@ function draw(){
 	drawStrings(paper);
 }
 
+var BOW_LENGTH = 400;
+var bow;
+
+function moveBow(rotation, posX, posY){
+	bow.setRotation(rotation);
+	
+	var points = bow.getPoints();
+	/*var averagePoint = new Point(0, 0);
+	
+	for(var a = 0; a < points.length; a++){
+		averagePoint.addPoint(points[a]);
+	}
+	
+	averagePoint.scale(1 / points.length);
+	averagePoint.addPoint()*/
+	
+	bow.setPosition(posX, posY);
+}
+
 function drawStrings(paper){
+	bow = new Path(paper);
+	bow.addPoint(0, 0);
+	bow.addPoint(BOW_LENGTH, 0);
+	bow.makePath();
+	bow.addStroke("black");
+	
 	string1 = new Path(paper);
 	string1.addPoint(40,10);
 	string1.addPoint(40,350);
@@ -112,6 +137,8 @@ function Path (paper){
 	this.paper = paper;
 	this.points = [];
 	this.pathString = "";
+	this.currPosition = new Point(0, 0);
+	
 	this.addPoint = function addPoint(x, y){
 		this.points.push(new Point(x,y));
 	};
@@ -137,6 +164,16 @@ function Path (paper){
 	this.getPath = function getPath(){
 		return this.path;
 	};
+	this.setRotation = function(angle){
+		this.path.rotate(angle, true);
+	}
+	this.getPoints = function(){
+		return this.points;
+	}
+	this.setPosition = function(px, py){
+		this.path.translate(this.currPosition.x - px, this.currPosition.y - py);
+		this.currPosition = new Point(px, py);
+	}
 }
 
 function Point (x, y){
@@ -148,6 +185,14 @@ function Point (x, y){
 	this.getY = function(){
 		return this.yPos;
 	};
+	this.addPoint = function(point){
+		this.xPos += point.xPos;
+		this.yPos += point.yPos;
+	}
+	this.scale = function(scalar){
+		this.xPos *= scalar;
+		this.yPos *= scalar;
+	}
 }
 
 function drawCircle(paper, x, y, r, color, fill){

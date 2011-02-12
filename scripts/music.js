@@ -20,11 +20,11 @@ ViolinString.prototype.getPitchByFinger = function(finger){
 	return this.notes[finger];
 }
 
-ViolinString.prototype.getStringByID = function(id){
+ViolinString.getStringByID = function(id){
 	return strings[id];
 }
 
-ViolinString.prototype.getStringByPitch = function(pitch){
+ViolinString.getStringByPitch = function(pitch){
 	for(var a = 0; a < 4; a++){
 		if(strings[a].containsPitch(pitch))
 			return a;

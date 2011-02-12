@@ -52,35 +52,23 @@ function stepSongPlayer(){
 			
 			break;
 	}
-	//------------End Song Player------------	
+	//------------End Song Player------------
 }
 
 function stepPlayerUI(){
 	//move bow
 	
-	var mouseX = 0;
-	var mouseY = 0;
-	var IE = document.all ? true : false;
-	
-	if (IE) { // grab the x-y pos.s if browser is IE
-		mouseX = event.clientX + document.body.scrollLeft;
-		mouseY = event.clientY + document.body.scrollTop;
-	} else {  // grab the x-y pos.s if browser is NS
-		mouseX = e.pageX;
-		mouseY = e.pageY;
-	}
-	
 	//match bow to strings
 	var angles = new Array(4);
 	for(var a = 0; a < 4; a++){
-		var string = this["s" + a];
-		angles[a] = Math.atan2(mouseY - string.y, mouseX - string.x);
-		
+		var string = ViolinString.getStringByID(a);
+		angles[a] = Math.atan2(mouseY - string.y, mouseX - string.x) * 180 / Math.PI;
 	}
-	greatest = Math.max(angles[0], angles[1], angles[2], angles[3]);
+	
+	var greatestAngle = Math.max(angles[0], angles[1], angles[2], angles[3]);
 	
 	var stringNum = -1;
-	switch(greatest){
+	switch(greatestAngle){
 		case angles[0]:
 			stringNum = 0;
 			break;
@@ -101,6 +89,10 @@ function stepPlayerUI(){
 			//error, bow isn't on a string?
 			break;
 	}
+	
+	//draw bow with rotation greatestAngle and pos
+	
+	moveBow(greatestAngle, mouseX, mouseY);
 	
 	var violinString = ViolinString.getStringByID(stringNum);
 	var pitch = violinString.getPitchByFinger(getMaxFinger());
