@@ -20,13 +20,13 @@ function moveBow(rotation, posX, posY){
 	averagePoint.scale(1 / points.length);
 	averagePoint.addPoint()*/
 	
-	bow.setPosition(posX, posY);
+	bow.setPosition(-posX, -posY);
 }
 
 function drawStrings(paper){
 	bow = new Path(paper);
-	bow.addPoint(0, 0);
-	bow.addPoint(BOW_LENGTH, 0);
+	bow.addPoint(-BOW_LENGTH / 2, 0);
+	bow.addPoint(BOW_LENGTH / 2, 0);
 	bow.makePath();
 	bow.addStroke("black");
 	
@@ -171,7 +171,7 @@ function Path (paper){
 		return this.points;
 	}
 	this.setPosition = function(px, py){
-		this.path.translate(this.currPosition.x - px, this.currPosition.y - py);
+		this.path.translate(this.currPosition.getX() - px, this.currPosition.getY() - py);
 		this.currPosition = new Point(px, py);
 	}
 }
