@@ -1,8 +1,13 @@
+#scoreboard {
+	font-family: Arial, Helvetica, sans-serif;
+    background: #ccc;
+    margin-bottom: 10px;
+}
 #sidebar {
 	font-family: Arial, Helvetica, sans-serif;
 	
     float: right;
-    width: 300px;
+    width: 400px;
     background: #ccc;
     margin: 10px;
 }
