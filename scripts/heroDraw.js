@@ -1,6 +1,7 @@
 function draw(){
 	paper = Raphael(0, 0, 800, 600);
 	drawTriangles(paper);
+	drawLetters(paper);
 	drawStrings(paper);
 }
 
@@ -12,12 +13,27 @@ function moveBow(rotation, posX, posY){
 	bow.setPosition(-posX, -posY);
 }
 
+function drawLetters(paper){
+	var t1 = drawText(paper, 272, 143, "G");
+	t1.attr({"font-size": "40"});
+	var t2 = drawText(paper, 466, 230, "D");
+	t2.attr({"font-size": "40"});
+	var t3 = drawText(paper, 485, 390, "A");
+	t3.attr({"font-size": "40"});
+	var t4 = drawText(paper, 353, 470, "E");
+	t4.attr({"font-size": "40"});
+}
+
 function drawStrings(paper){
 	bow = new Path(paper);
 	bow.addPoint(-BOW_LENGTH / 2, 0);
 	bow.addPoint(BOW_LENGTH / 2, 0);
+	bow.addPoint(BOW_LENGTH / 2, 12);
+	bow.addPoint(-BOW_LENGTH / 2, 12);
+	bow.addPoint(-BOW_LENGTH / 2, 0);
 	bow.makePath();
 	bow.addStroke("black");
+	bow.addFill("brown");
 	
 	string1 = new Path(paper);
 	string1.addPoint(40,10);
