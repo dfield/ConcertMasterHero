@@ -1,7 +1,7 @@
 function draw(){
 	var paper = Raphael(0, 0, 500, 500);
 	var circle = paper.circle(125, 125, 75);
-	circle.attr("fill", "#f00");
+	var rod = paper.rect(10, 10, 50, 50);s
 	circle.attr("stroke", "#fff");
 }
 
