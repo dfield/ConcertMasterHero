@@ -5,9 +5,8 @@
 	
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title>Concert Master Hero</title>
-	
+
 </head>
-<img src='cm-bg.jpg'></img>
 <body onLoad="draw()">
     
     <!--
@@ -33,7 +32,9 @@
             type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />
         
     </object>
-    
+    <a href='javascript:demoSong("Twinkle Twinkle Little Star")' value='Play Twinkle Twinkle'>Demo Song</a>
+    <a href='javascript:playSong("Twinkle Twinkle Little Star")' value='Play Along With Twinkle Twinkle'>Play Song</a>
+
     <canvas id="canvas"></canvas>
 	
     <a href="javascript:demoSong('Twinkle Twinkle Little Star');" onClick="">Play 3G</a>
@@ -41,6 +42,7 @@
     <script type="text/javascript" src="scripts/music.js"></script>
     <script type="text/javascript" src="scripts/flashCommunicator.js"></script>
 	<script type="text/javascript" src="scripts/raphael-min.js"></script>
+	<script type="text/javascript" src="scripts/wz_jsgraphics.js"></script>
 	
 </body>
 </html>
