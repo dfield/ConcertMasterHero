@@ -5,7 +5,7 @@ function draw(){
 	drawStrings(paper);
 }
 
-var BOW_LENGTH = 400;
+var BOW_LENGTH = 800;
 var bow;
 
 function moveBow(rotation, posX, posY){
@@ -28,8 +28,8 @@ function drawStrings(paper){
 	bow = new Path(paper);
 	bow.addPoint(-BOW_LENGTH / 2, 0);
 	bow.addPoint(BOW_LENGTH / 2, 0);
-	bow.addPoint(BOW_LENGTH / 2, 12);
-	bow.addPoint(-BOW_LENGTH / 2, 12);
+	bow.addPoint(BOW_LENGTH / 2, -12);
+	bow.addPoint(-BOW_LENGTH / 2, -12);
 	bow.addPoint(-BOW_LENGTH / 2, 0);
 	bow.makePath();
 	bow.addStroke("black");

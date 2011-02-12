@@ -57,7 +57,7 @@ function stepSongPlayer(){
 		case STATE_DEMO:
 			//use multilistener
 			if(currentSongs.length == 0){
-				currentState = STATE_WAIT;
+				setState(STATE_WAIT);
 				break;
 			}
 			
@@ -78,7 +78,7 @@ function stepSongPlayer(){
 		case STATE_PLAY:
 			//use single-track player for play alongs
 			if(!currentSong){
-				currentState = STATE_WAIT;
+				setState(STATE_WAIT);
 				break;
 			}
 			
@@ -88,7 +88,7 @@ function stepSongPlayer(){
 			playNotes(currentSong, -1);
 			if(currentTime >= currentSong.getEndTime()){
 				//end song and show score if song is over
-				currentState = STATE_WAIT;
+				setState(STATE_WAIT);
 				
 				var board = document.getElementById("song_score");
 				board.innerHTML = Math.ceil(songScore / songMax * 100);
@@ -219,7 +219,7 @@ function displayNotes(song){
 
 function playNotes(song, index){
 	//single-track player info here
-	var pIndex = currentPlayIndex;
+	var playIndex = currentPlayIndex;
 	var time = currentTime;
 	
 	//if the multi-sound player is begin used, pull info from arrays
@@ -248,18 +248,17 @@ function playNotes(song, index){
 }
 
 function demoSong(songName){
-	currentState = STATE_DEMO;
+	setState(STATE_DEMO);
 	startSong(songName);
 }
 
 function playSong(songName){
-	currentState = STATE_PLAY;
-	startSong(songName);
+	setState(STATE_PLAY);
 	
+	currentPlayIndex = 0;
 	currentTime = -DISPLAY_TIME;
+	currentSong = new Song(getSongCode(songName));
 	
-	noteScore = 0;
-	noteMax = 0;
 	songScore = 0;
 	songMax = 0;
 }
@@ -295,7 +294,7 @@ function recordSong(){
 			writeRecordNote();
 		
 		records.innerHTML += "<a href='javascript: playRecording(\"" + currentRecord + "\")'>Record #" + num_records + "</a><br />";
-		currentState = STATE_WAIT;
+		setState(STATE_WAIT);
 		
 	}
 	else{
@@ -307,9 +306,21 @@ function recordSong(){
 		currentRecord = "";
 		currentRecordNote = null;
 		currentTime = 0;
-		currentState = STATE_RECORD;
+		setState(STATE_RECORD);
 	}
 	
+}
+
+function setState(state){
+	currentState = state;
+	if(currentState != STATE_DEMO){
+		currentSongs = new Array();
+		currentTimes = new Array();
+		playIndices = new Array();
+	}
+	else{
+		currentSong = null;
+	}
 }
 
 function writeRecordNote(){
@@ -330,7 +341,7 @@ function createRecordNote(pitch){
 }
 
 function playRecording(code){
-	currentState = STATE_DEMO;
+	setState(STATE_DEMO);
 	startSongCode(code);
 }
 
